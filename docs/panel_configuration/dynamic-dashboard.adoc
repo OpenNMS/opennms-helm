@@ -6,7 +6,7 @@
 Instead of hard-coding specific information (such as node names or resource IDs) in a panel, {product-title} has several ways to create more dynamic and interactive dashboards:
 
 * xref:pc-template-filters[template variables]
-* filter panels
+* xref:pc-filter-panel[filter panels]
 
 [[pc-template-filters]]
 == Using Template Variables to Create Dynamic Dashboards
@@ -55,3 +55,19 @@ image::pc-node-final.png[Node final, 300]
 . Click the *Node* drop-down you created to select the nodes whose data you want to display:
 +
 image::pc-select-nodes.png[Node Select, 500]
+
+[[pc-filter-panel]]
+== Creating a Filter Panel
+
+A filter panel allows you to configure a series of variables to put in a dashboard. 
+While xref:pc-template-filters[template variables] work with the performance datasource, the filter panel coordinates with any panels in the dashboard that are using the xref:../datasources/entity_datasource.adoc#[entity datasource], to automatically apply filters that match those variables.
+
+To create a filter panel, follow these steps:
+
+. Select or xref:../getting_started/basic_walkthrough.adoc#[create a panel] that uses an entity datasource. 
+For this procedure, we created a panel that xref:../getting_started/basic_walkthrough.adoc#bw-alarm-panel[displays alarms].
+
+. 
+
+
+
