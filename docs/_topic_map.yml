@@ -54,6 +54,7 @@ Topics:
       File: index
     - Name: Planning your Dashboard
       File: dashboard_planning
+<<<<<<< Updated upstream
     - Name: Basic Walk-Through
       File: basic_walkthrough
     - Name: Migrating from the OpenNMS Data Source Plugin
@@ -74,7 +75,7 @@ Dir: datasources
 Topics:
     - Name: Peformance Datasource
       File: performance_datasource
-    - Name: Entity Datasource
+    - Name: Entities Datasource
       File: entity_datasource
     - Name: Flow Datasource
       File: flow_datasource

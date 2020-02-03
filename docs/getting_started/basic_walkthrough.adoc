@@ -192,10 +192,7 @@ Options are dependent on the type of datasource selected.
 [[bw-alarm-panel]]
 == Creating an Alarm Panel
 An alarm panel displays alarms from an xref:../datasources/entity_datasource.adoc#[entity datasource]. 
-Visualization of entity datasource information (currently nodes and alarms) is normally done in tables:
-
-* nodes (table)
-* alarms (tables, alarm table, or alarm histogram)
+Visualization of entity datasource information (currently nodes and alarms) is normally done in tables. 
 
 This procedure creates an alarm panel using an alarm table visualization. 
 
@@ -210,17 +207,17 @@ This procedure creates an alarm panel using an alarm table visualization.
 . Create filters and conditions to specify the nodes/alarms to display:
 .. Note that you can use nested "and/or" logic.
 .. You can order by ascending (oldest alarms first) or descending (most recent alarms) and limit the number of alarms displayed.
-.. Toggle featured attributes on or off to display more advanced properties. [which is which?]
+.. Toggle featured attributes on to display select attributes. Toggle it off to display all attributes in the drop-downs. 
 
 +
 .Sample alarm table configuration
 image::gf-alarm-table.png[Alarm table, 500]
 
 . In the left menu, click the visualization icon. 
-. In the *Visualization* drop-down, select *Graph>*.
-. Select an Alarm Table graph.
+. In the *Visualization* drop-down, select *Graph*.
+. Select an `Alarm Table` graph.
+.. With alarms, you can also choose `Table` or `Alarm histogram`; with nodes, choose `Table` 
 .. The graph appears in the top of the panel.
-.. You can further customize the graph by specifying information in the bottom half of the panel. 
+.. You can further customize the graph by specifying information in the bottom half of the screen. 
 . In the left menu, click the *General* icon to change the name of the panel and specify additional information. 
-
 . In the top-right menu, click the `Save dashboard` icon. 
