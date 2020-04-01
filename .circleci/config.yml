@@ -350,15 +350,6 @@ jobs:
             docker tag helm:$(cat version.tag) ${DOCKERHUB_PROJECT_USER}/${DOCKERHUB_PROJECT_NAME}:bleeding
             docker push ${DOCKERHUB_PROJECT_USER}/${DOCKERHUB_PROJECT_NAME}:bleeding
 
-  publish-docs:
-    executor: netlify-cli-executor
-    steps:
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: Deploy docs to Netlify
-          command: netlify deploy --prod -d public -s ${NETLIFY_SITE_ID}
-
   publish-rpm:
     executor: cloudsmith/default
     steps:
@@ -456,16 +447,6 @@ workflows:
           filters:
             branches:
               only: master
-            tags:
-              ignore: /^v.*/
-      - publish-docs:
-          requires:
-            - build-docs
-          filters:
-            branches:
-              only:
-                - master
-                - develop
             tags:
               ignore: /^v.*/
       - publish-deb:
