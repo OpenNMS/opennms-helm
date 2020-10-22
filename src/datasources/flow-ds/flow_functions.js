@@ -57,6 +57,15 @@ addFuncDef({
   params: [{name: "ifIndex", type: "int"}]
 });
 
+addFuncDef({
+  name: 'withTosByte',
+  category: categories.Filter,
+  cardinality: Cardinality.SINGLE,
+  params: [{
+    name: "tos",
+    type: "int"
+  }]
+});
 
 addFuncDef({
   name: 'withApplication',
@@ -68,7 +77,7 @@ addFuncDef({
     type: "string",
     options: (input, ctx) => {
       return ctx.client.getApplications(input, ctx.getStartTime(), ctx.getEndTime(), ctx.getNodeCriteria(),
-          ctx.getInterfaceId());
+          ctx.getInterfaceId(), ctx.getTosByte());
     }
   }]
 });
@@ -83,7 +92,7 @@ addFuncDef({
     type: "string",
     options: (input, ctx) => {
       return ctx.client.getHosts(input, ctx.getStartTime(), ctx.getEndTime(), ctx.getNodeCriteria(),
-          ctx.getInterfaceId());
+          ctx.getInterfaceId(), ctx.getTosByte());
     }
   }]
 });

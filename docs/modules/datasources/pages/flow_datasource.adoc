@@ -68,6 +68,24 @@ To query a specific node by foreign source and foreign id, you can use an expres
 interfacesOnExporterNodeWithFlows(FS:FID)
 ```
 
+=== tosOnExporterNodeAndInterface
+
+The `tosOnExporterNodeAndInterface()` query will return a list of ToS values which are used by one or more flows on the given node and interface.
+The value of the template variable is the `ToS Value` and the display text is the `DSCP Name` (if valid).
+
+The available arguments are as follows:
+[options="header, autowidth"]
+|===
+| Name                 | Default     | Description
+| nodeCriteria         | `(none)`    | Node criteria (Node ID, or Node Foreign Souce and Node Foreign ID) of the node on which to enumerate.
+| interface            | `(none)`    | Interface Index of the SNMP interface to enumerate.
+|===
+
+Assuming that the `$node` variable is populated with a value from the `exporterNodesWithFlows` query and that the `$interface` variable is populated with a value from the `interfacesOnExporterNodeWithFlows($node)` query, you can use the following expression:
+```
+tosOnExporterNodeAndInterface($node, $interface)
+```
+
 == Limitations
 
 The flow datasource only supports a single query per panel.

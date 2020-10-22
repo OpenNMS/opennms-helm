@@ -330,6 +330,10 @@ class OptionsContext {
     return this.getFirstParam('withIfIndex');
   }
 
+  getTosByte() {
+    return this.getFirstParam('withTosByte');
+  }
+
   getFirstParam(defName) {
     let param = undefined;
     this.functions.forEach((func) => {

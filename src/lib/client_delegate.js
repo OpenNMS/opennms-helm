@@ -317,42 +317,42 @@ export class ClientDelegate {
         }).catch(this.decorateError);
     }
 
-    getApplications(prefix, start, end, nodeCriteria, interfaceId) {
+    getApplications(prefix, start, end, nodeCriteria, interfaceId, tos) {
         return this.getFlowDao()
             .then(function(flowDao) {
-                return flowDao.getApplications(prefix, start, end, nodeCriteria, interfaceId);
+                return flowDao.getApplications(prefix, start, end, nodeCriteria, interfaceId, tos);
             }).catch(this.decorateError);
     }
 
-    getSeriesForTopNApplications(N, start, end, step, includeOther, nodeCriteria, interfaceId) {
+    getSeriesForTopNApplications(N, start, end, step, includeOther, nodeCriteria, interfaceId, tos) {
         return this.getFlowDao()
             .then(function(flowDao) {
-                return flowDao.getSeriesForTopNApplications(N, start, end, step, includeOther, nodeCriteria, interfaceId);
+                return flowDao.getSeriesForTopNApplications(N, start, end, step, includeOther, nodeCriteria, interfaceId, tos);
             }).catch(this.decorateError);
     }
 
-    getSeriesForApplications(applications, start, end, step, includeOther, nodeCriteria, interfaceId) {
+    getSeriesForApplications(applications, start, end, step, includeOther, nodeCriteria, interfaceId, tos) {
         return this.getFlowDao()
             .then(function(flowDao) {
-                return flowDao.getSeriesForApplications(applications, start, end, step, includeOther, nodeCriteria, interfaceId);
+                return flowDao.getSeriesForApplications(applications, start, end, step, includeOther, nodeCriteria, interfaceId, tos);
             }).catch(this.decorateError);
     }
 
-    getSummaryForTopNApplications(N, start, end, includeOther, nodeCriteria, interfaceId) {
+    getSummaryForTopNApplications(N, start, end, includeOther, nodeCriteria, interfaceId, tos) {
         return this.getFlowDao()
             .then(function(flowDao) {
-                return flowDao.getSummaryForTopNApplications(N, start, end, includeOther, nodeCriteria, interfaceId);
+                return flowDao.getSummaryForTopNApplications(N, start, end, includeOther, nodeCriteria, interfaceId, tos);
             }).catch(this.decorateError);
     }
 
-    getSummaryForApplications(applications, start, end, includeOther, nodeCriteria, interfaceId) {
+    getSummaryForApplications(applications, start, end, includeOther, nodeCriteria, interfaceId, tos) {
         return this.getFlowDao()
             .then(function(flowDao) {
-                return flowDao.getSummaryForApplications(applications, start, end, includeOther, nodeCriteria, interfaceId);
+                return flowDao.getSummaryForApplications(applications, start, end, includeOther, nodeCriteria, interfaceId, tos);
             }).catch(this.decorateError);
     }
 
-    getSeriesForTopNConversations(N, start, end, step, includeOther, nodeCriteria, interfaceId) {
+    getSeriesForTopNConversations(N, start, end, step, includeOther, nodeCriteria, interfaceId, tos) {
         return this.getFlowDao()
             .then(function(flowDao) {
                 return flowDao.getSeriesForTopNConversations({
@@ -362,19 +362,20 @@ export class ClientDelegate {
                     step: step,
                     exporterNode: nodeCriteria,
                     ifIndex: interfaceId,
+                    tos: tos,
                     includeOther: includeOther
                 });
             }).catch(this.decorateError);
     }
 
-    getSeriesForConversations(conversations, start, end, step, includeOther, nodeCriteria, interfaceId) {
+    getSeriesForConversations(conversations, start, end, step, includeOther, nodeCriteria, interfaceId, tos) {
         return this.getFlowDao()
             .then(function(flowDao) {
-                return flowDao.getSeriesForConversations(conversations, start, end, step, includeOther, nodeCriteria, interfaceId);
+                return flowDao.getSeriesForConversations(conversations, start, end, step, includeOther, nodeCriteria, interfaceId, tos);
             }).catch(this.decorateError);
     }
 
-    getSummaryForTopNConversations(N, start, end, includeOther, nodeCriteria, interfaceId) {
+    getSummaryForTopNConversations(N, start, end, includeOther, nodeCriteria, interfaceId, tos) {
         return this.getFlowDao()
             .then(function(flowDao) {
                 return flowDao.getSummaryForTopNConversations({
@@ -383,50 +384,51 @@ export class ClientDelegate {
                     end: end,
                     exporterNode: nodeCriteria,
                     ifIndex: interfaceId,
+                    tos: tos,
                     includeOther: includeOther
                 });
             }).catch(this.decorateError);
     }
 
-    getSummaryForConversations(conversations, start, end, includeOther, nodeCriteria, interfaceId) {
+    getSummaryForConversations(conversations, start, end, includeOther, nodeCriteria, interfaceId, tos) {
         return this.getFlowDao()
             .then(function(flowDao) {
-                return flowDao.getSummaryForConversations(conversations, start, end, includeOther, nodeCriteria, interfaceId);
+                return flowDao.getSummaryForConversations(conversations, start, end, includeOther, nodeCriteria, interfaceId, tos);
             }).catch(this.decorateError);
     }
 
-    getHosts(prefix, start, end, nodeCriteria, interfaceId) {
+    getHosts(prefix, start, end, nodeCriteria, interfaceId, tos) {
         return this.getFlowDao()
             .then(function(flowDao) {
-                return flowDao.getHosts(prefix + '.*', start, end, nodeCriteria, interfaceId);
+                return flowDao.getHosts(prefix + '.*', start, end, nodeCriteria, interfaceId, tos);
             }).catch(this.decorateError);
     }
 
-    getSeriesForHosts(hosts, start, end, step, includeOther, nodeCriteria, interfaceId) {
+    getSeriesForHosts(hosts, start, end, step, includeOther, nodeCriteria, interfaceId, tos) {
         return this.getFlowDao()
             .then(function(flowDao) {
-                return flowDao.getSeriesForHosts(hosts, start, end, step, includeOther, nodeCriteria, interfaceId);
+                return flowDao.getSeriesForHosts(hosts, start, end, step, includeOther, nodeCriteria, interfaceId, tos);
             }).catch(this.decorateError);
     }
 
-    getSeriesForTopNHosts(N, start, end, step, includeOther, nodeCriteria, interfaceId) {
+    getSeriesForTopNHosts(N, start, end, step, includeOther, nodeCriteria, interfaceId, tos) {
         return this.getFlowDao()
             .then(function(flowDao) {
-                return flowDao.getSeriesForTopNHosts(N, start, end, step, includeOther, nodeCriteria, interfaceId);
+                return flowDao.getSeriesForTopNHosts(N, start, end, step, includeOther, nodeCriteria, interfaceId, tos);
             }).catch(this.decorateError);
     }
 
-    getSummaryForTopNHosts(N, start, end, includeOther, nodeCriteria, interfaceId) {
+    getSummaryForTopNHosts(N, start, end, includeOther, nodeCriteria, interfaceId, tos) {
         return this.getFlowDao()
             .then(function(flowDao) {
-                return flowDao.getSummaryForTopNHosts(N, start, end, includeOther, nodeCriteria, interfaceId);
+                return flowDao.getSummaryForTopNHosts(N, start, end, includeOther, nodeCriteria, interfaceId, tos);
             }).catch(this.decorateError);
     }
 
-    getSummaryForHosts(hosts, start, end, includeOther, nodeCriteria, interfaceId) {
+    getSummaryForHosts(hosts, start, end, includeOther, nodeCriteria, interfaceId, tos) {
         return this.getFlowDao()
             .then(function(flowDao) {
-                return flowDao.getSummaryForHosts(hosts, start, end, includeOther, nodeCriteria, interfaceId);
+                return flowDao.getSummaryForHosts(hosts, start, end, includeOther, nodeCriteria, interfaceId, tos);
             }).catch(this.decorateError);
     }
 
@@ -443,6 +445,13 @@ export class ClientDelegate {
         return this.getFlowDao()
             .then(function(flowDao) {
                 return flowDao.getExporter(nodeCriteria, searchLimit);
+            }).catch(this.decorateError);
+    }
+
+    getTosBytes(nodeCriteria, interfaceId) {
+        return this.getFlowDao()
+            .then(function(flowDao) {
+                return flowDao.getTosBytes(nodeCriteria, interfaceId);
             }).catch(this.decorateError);
     }
 }

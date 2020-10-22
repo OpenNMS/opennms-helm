@@ -36,6 +36,7 @@ export class FlowDatasource {
     // Filter
     let exporterNode = this.getFunctionParameterOrDefault(target, 'withExporterNode', 0);
     let ifIndex = this.getFunctionParameterOrDefault(target, 'withIfIndex', 0);
+    let tos = this.getFunctionParameterOrDefault(target, 'withTosByte', 0);
     let applications = this.getFunctionParametersOrDefault(target, 'withApplication', 0, null);
     let conversations = this.getFunctionParametersOrDefault(target, 'withConversation', 0, null);
     let hosts = this.getFunctionParametersOrDefault(target, 'withHost', 0, null);
@@ -56,13 +57,13 @@ export class FlowDatasource {
       case 'conversations':
         if (!asTableSummary) {
           if (conversations && conversations.length > 0) {
-            return this.client.getSeriesForConversations(conversations, start, end, step, includeOther, exporterNode, ifIndex).then(series => {
+            return this.client.getSeriesForConversations(conversations, start, end, step, includeOther, exporterNode, ifIndex, tos).then(series => {
               return {
                 data: FlowDatasource.toSeries(target, series)
               };
             });
           } else {
-            return this.client.getSeriesForTopNConversations(N, start, end, step, includeOther, exporterNode, ifIndex).then(series => {
+            return this.client.getSeriesForTopNConversations(N, start, end, step, includeOther, exporterNode, ifIndex, tos).then(series => {
               return {
                 data: FlowDatasource.toSeries(target, series)
               };
@@ -70,13 +71,13 @@ export class FlowDatasource {
           }
         } else {
           if (conversations && conversations.length > 0) {
-            return this.client.getSummaryForConversations(conversations, start, end, includeOther, exporterNode, ifIndex).then(table => {
+            return this.client.getSummaryForConversations(conversations, start, end, includeOther, exporterNode, ifIndex, tos).then(table => {
               return {
                 data: FlowDatasource.toTable(target, table)
               };
             });
           } else {
-            return this.client.getSummaryForTopNConversations(N, start, end, includeOther, exporterNode, ifIndex).then(table => {
+            return this.client.getSummaryForTopNConversations(N, start, end, includeOther, exporterNode, ifIndex, tos).then(table => {
               return {
                 data: FlowDatasource.toTable(target, table)
               };
@@ -86,13 +87,13 @@ export class FlowDatasource {
       case 'applications':
         if (!asTableSummary) {
           if (applications && applications.length > 0) {
-            return this.client.getSeriesForApplications(applications, start, end, step, includeOther, exporterNode, ifIndex).then(series => {
+            return this.client.getSeriesForApplications(applications, start, end, step, includeOther, exporterNode, ifIndex, tos).then(series => {
               return {
                 data: FlowDatasource.toSeries(target, series)
               };
             });
           } else {
-            return this.client.getSeriesForTopNApplications(N, start, end, step, includeOther, exporterNode, ifIndex).then(series => {
+            return this.client.getSeriesForTopNApplications(N, start, end, step, includeOther, exporterNode, ifIndex, tos).then(series => {
               return {
                 data: FlowDatasource.toSeries(target, series)
               };
@@ -100,13 +101,13 @@ export class FlowDatasource {
           }
         } else {
           if (applications && applications.length > 0) {
-            return this.client.getSummaryForApplications(applications, start, end, includeOther, exporterNode, ifIndex).then(table => {
+            return this.client.getSummaryForApplications(applications, start, end, includeOther, exporterNode, ifIndex, tos).then(table => {
               return {
                 data: FlowDatasource.toTable(target, table)
               };
             });
           } else {
-            return this.client.getSummaryForTopNApplications(N, start, end, includeOther, exporterNode, ifIndex).then(table => {
+            return this.client.getSummaryForTopNApplications(N, start, end, includeOther, exporterNode, ifIndex, tos).then(table => {
               return {
                 data: FlowDatasource.toTable(target, table)
               };
@@ -116,13 +117,13 @@ export class FlowDatasource {
       case 'hosts':
         if (!asTableSummary) {
           if (hosts && hosts.length > 0) {
-            return this.client.getSeriesForHosts(hosts, start, end, step, includeOther, exporterNode, ifIndex).then(series => {
+            return this.client.getSeriesForHosts(hosts, start, end, step, includeOther, exporterNode, ifIndex, tos).then(series => {
               return {
                 data: FlowDatasource.toSeries(target, series)
               };
             });
           } else {
-            return this.client.getSeriesForTopNHosts(N, start, end, step, includeOther, exporterNode, ifIndex).then(series => {
+            return this.client.getSeriesForTopNHosts(N, start, end, step, includeOther, exporterNode, ifIndex, tos).then(series => {
               return {
                 data: FlowDatasource.toSeries(target, series)
               };
@@ -130,13 +131,13 @@ export class FlowDatasource {
           }
         } else {
           if (hosts && hosts.length > 0) {
-            return this.client.getSummaryForHosts(hosts, start, end, includeOther, exporterNode, ifIndex).then(table => {
+            return this.client.getSummaryForHosts(hosts, start, end, includeOther, exporterNode, ifIndex, tos).then(table => {
               return {
                 data: FlowDatasource.toTable(target, table)
               };
             });
           } else {
-            return this.client.getSummaryForTopNHosts(N, start, end, includeOther, exporterNode, ifIndex).then(table => {
+            return this.client.getSummaryForTopNHosts(N, start, end, includeOther, exporterNode, ifIndex, tos).then(table => {
               return {
                 data: FlowDatasource.toTable(target, table)
               };
@@ -191,6 +192,7 @@ export class FlowDatasource {
 
     let exporterNodesRegex = /exporterNodesWithFlows\((.*)\)/;
     let interfacesOnExporterNodeRegex = /interfacesOnExporterNodeWithFlows\((.*)\)/;
+    let tosOnExporterNodeAndInterfaceRegex = /tosOnExporterNodeAndInterface\((.*), *(.*)\)/;
 
     let exporterNodesQuery = query.match(exporterNodesRegex);
     if (exporterNodesQuery) {
@@ -200,6 +202,11 @@ export class FlowDatasource {
     let interfacesOnExporterNodeQuery = query.match(interfacesOnExporterNodeRegex);
     if (interfacesOnExporterNodeQuery) {
       return this.metricFindInterfacesOnExporterNode(interfacesOnExporterNodeQuery[1]);
+    }
+
+    let tosOnExporterNodeAndInterfaceQuery = query.match(tosOnExporterNodeAndInterfaceRegex);
+    if (tosOnExporterNodeAndInterfaceQuery) {
+      return this.metricFindTosOnExporterNodeAndInterface(tosOnExporterNodeAndInterfaceQuery[1], tosOnExporterNodeAndInterfaceQuery[2]);
     }
 
     return this.$q.resolve([]);
@@ -220,6 +227,20 @@ export class FlowDatasource {
       let results = [];
       _.each(exporter.interfaces, function (iff) {
         results.push({text: iff.name + "(" + iff.index + ")", value: iff.index, expandable: true});
+      });
+      return results;
+    });
+  }
+
+  metricFindTosOnExporterNodeAndInterface(node, iface) {
+    return this.client.getTosBytes(node,  iface).then(values => {
+      values = _.sortBy(values);
+
+      let results = [];
+      results.push({text: "(All)", value: "",});
+
+      _.each(values, function (tos) {
+        results.push({text: tos + "(" + tos + ")", value: tos, expandable: true});
       });
       return results;
     });
