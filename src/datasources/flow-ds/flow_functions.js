@@ -68,6 +68,26 @@ addFuncDef({
 });
 
 addFuncDef({
+  name: 'withDscp',
+  category: categories.Filter,
+  cardinality: Cardinality.SINGLE,
+  params: [{
+    name: "dscp",
+    type: "int"
+  }]
+});
+
+addFuncDef({
+  name: 'withEcn',
+  category: categories.Filter,
+  cardinality: Cardinality.SINGLE,
+  params: [{
+    name: "ecn",
+    type: "int"
+  }]
+});
+
+addFuncDef({
   name: 'withApplication',
   category: categories.Filter,
   mutuallyExcludes: ['topN'],
@@ -77,7 +97,7 @@ addFuncDef({
     type: "string",
     options: (input, ctx) => {
       return ctx.client.getApplications(input, ctx.getStartTime(), ctx.getEndTime(), ctx.getNodeCriteria(),
-          ctx.getInterfaceId(), ctx.getTosByte());
+          ctx.getInterfaceId(), ctx.getTosByte(), ctx.getDscp(), ctx.getEcn());
     }
   }]
 });
@@ -92,7 +112,7 @@ addFuncDef({
     type: "string",
     options: (input, ctx) => {
       return ctx.client.getHosts(input, ctx.getStartTime(), ctx.getEndTime(), ctx.getNodeCriteria(),
-          ctx.getInterfaceId(), ctx.getTosByte());
+          ctx.getInterfaceId(), ctx.getTosByte(), ctx.getDscp(), ctx.getEcn());
     }
   }]
 });

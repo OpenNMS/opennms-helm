@@ -334,6 +334,14 @@ class OptionsContext {
     return this.getFirstParam('withTosByte');
   }
 
+  getDscp() {
+    return this.getFirstParam('withDscp');
+  }
+
+  getEcn() {
+    return this.getFirstParam('withEcn');
+  }
+
   getFirstParam(defName) {
     let param = undefined;
     this.functions.forEach((func) => {
