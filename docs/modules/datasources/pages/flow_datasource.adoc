@@ -88,8 +88,8 @@ tosOnExporterNodeAndInterface($node, $interface)
 
 === dscpOnExporterNodeAndInterface
 
-The `dscpOnExporterNodeAndInterface()` query will return a list of Dscp values which are used by one or more flows on the given node and interface.
-The value of the template variable is the `Dscp Value` and the display text is the `DSCP Name` (if valid).
+The `dscpOnExporterNodeAndInterface()` query will return a list of DSCP values which are used by one or more flows on the given node and interface.
+The value of the template variable is the `DSCP Value` and the display text is the `DSCP Name` (if valid).
 
 The available arguments are as follows:
 [options="header, autowidth"]
@@ -104,22 +104,14 @@ Assuming that the `$node` variable is populated with a value from the `exporterN
 dscpOnExporterNodeAndInterface($node, $interface)
 ```
 
-=== ecnOnExporterNodeAndInterface
+=== ecn
 
-The `ecnOnExporterNodeAndInterface()` query will return a list of Ecn values which are used by one or more flows on the given node and interface.
-The value of the template variable is the `Ecn Value` and the display text is the `Ecn Name` (if valid).
+The `ecn()` will return a list of ECN values.
+The value of the template variable is the `ECN Value` and the display text is the `ECN Name` (if valid).
 
-The available arguments are as follows:
-[options="header, autowidth"]
-|===
-| Name                 | Default     | Description
-| nodeCriteria         | `(none)`    | Node criteria (Node ID, or Node Foreign Souce and Node Foreign ID) of the node on which to enumerate.
-| interface            | `(none)`    | Interface Index of the SNMP interface to enumerate.
-|===
-
-Assuming that the `$node` variable is populated with a value from the `exporterNodesWithFlows` query and that the `$interface` variable is populated with a value from the `interfacesOnExporterNodeWithFlows($node)` query, you can use the following expression:
+You can use the following expression to query for valid ECN values:
 ```
-ecnOnExporterNodeAndInterface($node, $interface)
+ecn()
 ```
 
 == Limitations

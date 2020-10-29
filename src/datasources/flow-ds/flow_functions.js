@@ -60,6 +60,7 @@ addFuncDef({
 addFuncDef({
   name: 'withTosByte',
   category: categories.Filter,
+  mutuallyExcludes: ["withDscp", "withEcn"],
   cardinality: Cardinality.SINGLE,
   params: [{
     name: "tos",
@@ -70,6 +71,7 @@ addFuncDef({
 addFuncDef({
   name: 'withDscp',
   category: categories.Filter,
+  mutuallyExcludes: ["withTosByte"],
   cardinality: Cardinality.SINGLE,
   params: [{
     name: "dscp",
@@ -80,6 +82,7 @@ addFuncDef({
 addFuncDef({
   name: 'withEcn',
   category: categories.Filter,
+  mutuallyExcludes: ["withTosByte"],
   cardinality: Cardinality.SINGLE,
   params: [{
     name: "ecn",
