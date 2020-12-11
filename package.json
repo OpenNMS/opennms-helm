@@ -21,7 +21,10 @@
     "@babel/preset-typescript": "^7.12.7",
     "@babel/register": "^7.6.2",
     "@types/chai": "^4.2.14",
+    "@types/lodash": "^4.14.165",
     "@types/mocha": "^8.2.0",
+    "@typescript-eslint/eslint-plugin": "^4.9.1",
+    "@typescript-eslint/parser": "^4.9.1",
     "argv": "^0.0.2",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
@@ -97,14 +100,14 @@
   "scripts": {
     "clean": "rimraf dist",
     "install-deps": "npm --prefer-offline --no-progress install",
-    "dev": "webpack --mode=development",
+    "dev": "tsc && webpack --mode=development",
     "docs": "antora generate local-site.yml",
-    "build": "npm run clean && webpack --mode=production --optimize-minimize --optimize-dedupe",
-    "eslint": "eslint 'src/**/*.js'",
-    "eslint-circleci": "eslint 'src/**/*.js' --format junit --output-file reports/eslint/eslint.xml",
+    "build": "npm run clean && tsc && webpack --mode=production --optimize-minimize --optimize-dedupe",
+    "eslint": "eslint 'src/**/*.js' 'src/**/*.ts'",
+    "eslint-circleci": "eslint 'src/**/*.js 'src/**/*.ts'' --format junit --output-file reports/eslint/eslint.xml",
     "test": "mocha --require @babel/register --require jsdom-global/register --require src/spec/test-main.js src/spec/*.js src/spec/*.ts",
-    "test-circleci": "mocha --require @babel/register --require jsdom-global/register --require src/spec/test-main.js src/spec/*.js --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml",
+    "test-circleci": "mocha --require @babel/register --require jsdom-global/register --require src/spec/test-main.js src/spec/*.js src/spec/*.ts --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml",
     "watch": "webpack --mode=development --watch",
-    "watch-test": "mocha --watch --require @babel/register --require jsdom-global/register --require src/spec/test-main.js src/spec/*.js"
+    "watch-test": "mocha --watch --require @babel/register --require jsdom-global/register --require src/spec/test-main.js src/spec/*.js src/spec/*.ts"
   }
 }
