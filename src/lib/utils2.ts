@@ -44,7 +44,7 @@ export function processMultiSelectionVariables(input?: string[]): string[] {
         if (mapped.some(m => m.some(s => s === 'all'))) {
             return []
         } else {
-            return [].concat(...mapped).filter(isFirst)
+            return ([] as string[]).concat(...mapped).filter(isFirst)
         }
     } else {
         return []

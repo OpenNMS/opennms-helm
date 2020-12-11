@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import {ClientDelegate} from '../../lib/client_delegate';
 import kbn from 'app/core/utils/kbn';
-import {dscpCodesToOptions} from "../../lib/tos_helper";
-import {processMultiSelectionVariables} from "../../lib/utils2";
+import {processMultiSelectionVariables} from "src/lib/utils2";
+import {dscpSelectOptions} from "src/lib/tos_helper";
 
 export class FlowDatasource {
   /** @ngInject */
@@ -286,7 +286,7 @@ export class FlowDatasource {
 
   metricFindDscpOnExporterNodeAndInterface(node, iface, start, end) {
     return this.client.getDscpValues(node,  iface, start, end).then(
-        values => dscpCodesToOptions(values).map(o => ({ text: o, value: o}))
+        values => dscpSelectOptions(values)
     );
   }
 

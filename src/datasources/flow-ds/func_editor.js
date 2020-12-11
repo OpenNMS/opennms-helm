@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import template_srv from "src/spec/template_srv";
 
 /**
  * This function editor has been adapted from the Graphite query editor's functione editor.
