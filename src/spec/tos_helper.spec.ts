@@ -1,15 +1,13 @@
-import {dscpCodesToOptions, ecnCodesToOptions} from '../lib/tos_helper'
+import {dscpTypeAheadOptions} from '../lib/tos_helper'
 import {expect} from 'chai'
 
 describe('TosHelper', () => {
-    // tslint:disable-next-line:completed-docs
     function checkSingleCodes(cases: [number, string[]][], codesToOption: (codes: number[]) => string[]) {
         for (const c of cases) {
             expect(codesToOption([c[0]])).to.deep.equal([c[0].toString(), ...c[1]])
         }
     }
 
-    // tslint:disable-next-line:completed-docs
     function checkSingleTwoCodes(cases: [number, string[]][], codesToOption: (codes: number[]) => string[]) {
         for (let i = 0; i < cases.length - 1; i++) {
             const c1 = cases[i]
@@ -46,24 +44,10 @@ describe('TosHelper', () => {
             [56, ['CS7', 'P7']],
         ]
         it('for single code', () => {
-            checkSingleCodes(cases, dscpCodesToOptions)
+            checkSingleCodes(cases, dscpTypeAheadOptions)
         })
         it('for two codes', () => {
-            checkSingleTwoCodes(cases, dscpCodesToOptions)
-        })
-    })
-    describe('ecn options', () => {
-        const cases: [number, string[]][] = [
-            [0, []],
-            [1, ['ECT']],
-            [2, ['ECT']],
-            [3, ['CE']],
-        ]
-        it('for single code', () => {
-            checkSingleCodes(cases, ecnCodesToOptions)
-        })
-        it('for two codes', () => {
-            checkSingleTwoCodes(cases, ecnCodesToOptions)
+            checkSingleTwoCodes(cases, dscpTypeAheadOptions)
         })
     })
 })

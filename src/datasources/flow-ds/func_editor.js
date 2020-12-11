@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import template_srv from "src/spec/template_srv";
 
 /**
  * This function editor has been adapted from the Graphite query editor's functione editor.
@@ -165,7 +166,7 @@ angular
             if (this.$element.data('optionsUpdater')) {
               if (this.$element.val().length > 0) {
                 this.$element.data('optionsUpdater')(this.$element.val(),
-                    new OptionsContext(timeSrv, $scope.ctrl.functions, $scope.ctrl.datasource.client)).then((data) => {
+                    new OptionsContext(timeSrv, $scope.ctrl.functions, $scope.ctrl.datasource.client, templateSrv)).then((data) => {
                   typeahead.source = data;
                   return this.process(this.source);
                 });
@@ -308,10 +309,11 @@ angular
   });
 
 class OptionsContext {
-  constructor(timeSrv, functions, client) {
+  constructor(timeSrv, functions, client, templateSrv) {
     this.range = timeSrv.timeRange();
     this.functions = functions;
     this.client = client;
+    this.templateSrv = templateSrv;
   }
 
   getStartTime() {
@@ -347,6 +349,7 @@ class OptionsContext {
     this.functions.forEach((func) => {
       if(func.def.name === defName) {
         param = func.params[0];
+        param = this.templateSrv.replace(param);
       }
     });
     return param;
