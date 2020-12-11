@@ -131,6 +131,12 @@
               ]
             },
             {
+              "name": "withDscp",
+              "parameters": [
+                "$dscp"
+              ]
+            },
+            {
               "name": "perSecond",
               "parameters": []
             }
@@ -332,6 +338,12 @@
               "name": "withIfIndex",
               "parameters": [
                 "$interface"
+              ]
+            },
+            {
+              "name": "withDscp",
+              "parameters": [
+                "$dscp"
               ]
             },
             {
@@ -637,6 +649,12 @@
                   ]
                 },
                 {
+                  "name": "withDscp",
+                  "parameters": [
+                    "$dscp"
+                  ]
+                },
+                {
                   "name": "withIfIndex",
                   "parameters": [
                     "$interface"
@@ -840,6 +858,12 @@
                   ]
                 },
                 {
+                  "name": "withDscp",
+                  "parameters": [
+                    "$dscp"
+                  ]
+                },
+                {
                   "name": "asTableSummary",
                   "parameters": []
                 }
@@ -919,6 +943,28 @@
         "query": "interfacesOnExporterNodeWithFlows($node)",
         "refresh": 1,
         "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "all",
+        "current": {},
+        "datasource": "$flowds",
+        "definition": "dscpOnExporterNodeAndInterface($node, $interface, $__from, $__to)",
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "dscp",
+        "options": [],
+        "query": "dscpOnExporterNodeAndInterface($node, $interface, $__from, $__to)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
         "tags": [],
