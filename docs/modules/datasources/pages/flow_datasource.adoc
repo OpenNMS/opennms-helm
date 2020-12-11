@@ -68,28 +68,11 @@ To query a specific node by foreign source and foreign id, you can use an expres
 interfacesOnExporterNodeWithFlows(FS:FID)
 ```
 
-=== tosOnExporterNodeAndInterface
-
-The `tosOnExporterNodeAndInterface()` query will return a list of ToS values which are used by one or more flows on the given node and interface.
-The value of the template variable is the `ToS Value`.
-
-The available arguments are as follows:
-[options="header, autowidth"]
-|===
-| Name                 | Default     | Description
-| nodeCriteria         | `(none)`    | Node criteria (Node ID, or Node Foreign Souce and Node Foreign ID) of the node on which to enumerate.
-| interface            | `(none)`    | Interface Index of the SNMP interface to enumerate.
-|===
-
-Assuming that the `$node` variable is populated with a value from the `exporterNodesWithFlows` query and that the `$interface` variable is populated with a value from the `interfacesOnExporterNodeWithFlows($node)` query, you can use the following expression:
-```
-tosOnExporterNodeAndInterface($node, $interface)
-```
-
 === dscpOnExporterNodeAndInterface
 
-The `dscpOnExporterNodeAndInterface()` query will return a list of DSCP values which are used by one or more flows on the given node and interface.
-The value of the template variable is the `DSCP Value` and the display text is the `DSCP Name` (if valid).
+The `dscpOnExporterNodeAndInterface()` query will return a list of DSCP values which are used by one or more flows on the given node and interface
+and given time range. The query returns selection options for the found DSCP values and ip precedence groups that cover these values.
+Labels of selection options for DSCP codes are symbolic names for these DSCP codes followed by the corresponding number (if applicable).
 
 The available arguments are as follows:
 [options="header, autowidth"]
@@ -101,17 +84,7 @@ The available arguments are as follows:
 
 Assuming that the `$node` variable is populated with a value from the `exporterNodesWithFlows` query and that the `$interface` variable is populated with a value from the `interfacesOnExporterNodeWithFlows($node)` query, you can use the following expression:
 ```
-dscpOnExporterNodeAndInterface($node, $interface)
-```
-
-=== ecn
-
-The `ecn()` will return a list of ECN values.
-The value of the template variable is the `ECN Value` and the display text is the `ECN Name` (if valid).
-
-You can use the following expression to query for valid ECN values:
-```
-ecn()
+dscpOnExporterNodeAndInterface($node, $interface, $__from, $__to)
 ```
 
 == Limitations

@@ -54,7 +54,8 @@ export class FlowDatasourceQueryCtrl extends QueryCtrl {
     return Promise.resolve([
       {value: 'applications'},
       {value: 'conversations'},
-      {value: 'hosts'}
+      {value: 'hosts'},
+      {value: 'dscps'}
     ]);
   }
 
