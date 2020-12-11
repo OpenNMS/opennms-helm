@@ -105,7 +105,7 @@
     "docs": "antora generate local-site.yml",
     "build": "npm run clean && tsc && webpack --mode=production --optimize-minimize --optimize-dedupe",
     "eslint": "eslint 'src/**/*.js' 'src/**/*.ts'",
-    "eslint-circleci": "eslint 'src/**/*.js 'src/**/*.ts'' --format junit --output-file reports/eslint/eslint.xml",
+    "eslint-circleci": "eslint 'src/**/*.js' 'src/**/*.ts' --format junit --output-file reports/eslint/eslint.xml",
     "test": "mocha --require @babel/register --require jsdom-global/register --require src/spec/test-main.js src/spec/*.js src/spec/*.ts",
     "test-circleci": "mocha --require @babel/register --require jsdom-global/register --require src/spec/test-main.js src/spec/*.js src/spec/*.ts --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml",
     "watch": "webpack --mode=development --watch",
