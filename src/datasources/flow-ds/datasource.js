@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {ClientDelegate} from '../../lib/client_delegate';
+import {ClientDelegate} from 'src/lib/client_delegate';
 import kbn from 'app/core/utils/kbn';
 import {processMultiSelectionVariables} from "src/lib/utils2";
 import {dscpSelectOptions} from "src/lib/tos_helper";
