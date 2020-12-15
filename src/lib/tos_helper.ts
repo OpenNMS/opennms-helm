@@ -34,6 +34,13 @@ export function dscpSelectOptions(codes: number[]): { text: string, value: strin
     ]
 }
 
+/**
+ * Return the dscp label for the given code.
+ */
+export function dscpLabel(code: string): string {
+    return dscpCodes[+code].label
+}
+
 export class DscpCode {
     constructor(
         public readonly code: number,
@@ -41,6 +48,12 @@ export class DscpCode {
         public ipPrecedence?: number,
     ) {}
 
+    /**
+     * Gets the label for this dscp code.
+     *
+     * If there is a symbolic name for this code then the label is the symbolic name followed by the code number
+     * in parentheses other the code number is returned as a string.
+     */
     get label(): string {
         return this.symbolicName ? `${this.symbolicName} (${this.code})` : `${this.code}`
     }

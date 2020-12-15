@@ -2,7 +2,7 @@ import _ from 'lodash';
 import {ClientDelegate} from 'src/lib/client_delegate';
 import kbn from 'app/core/utils/kbn';
 import {processMultiSelectionVariables} from "src/lib/utils2";
-import {dscpSelectOptions} from "src/lib/tos_helper";
+import {dscpLabel, dscpSelectOptions} from "src/lib/tos_helper";
 
 export class FlowDatasource {
   /** @ngInject */
@@ -149,33 +149,17 @@ export class FlowDatasource {
         }
       case 'dscps':
         if (!asTableSummary) {
-          if (dscp && dscp.length > 0) {
-            return this.client.getSeriesForDscps(hosts, start, end, step, includeOther, exporterNode, ifIndex, dscp, ecn).then(series => {
-              return {
-                data: FlowDatasource.toSeries(target, series)
-              };
-            });
-          } else {
-            return this.client.getSeriesForTopNHosts(N, start, end, step, includeOther, exporterNode, ifIndex, dscp, ecn).then(series => {
-              return {
-                data: FlowDatasource.toSeries(target, series)
-              };
-            });
-          }
+          return this.client.getSeriesForDscps(start, end, step, exporterNode, ifIndex, dscp, ecn).then(series => {
+            return {
+              data: FlowDatasource.toSeries(target, series, dscpLabel)
+            };
+          });
         } else {
-          if (hosts && hosts.length > 0) {
-            return this.client.getSummaryForHosts(hosts, start, end, includeOther, exporterNode, ifIndex, dscp, ecn).then(table => {
-              return {
-                data: FlowDatasource.toTable(target, table)
-              };
-            });
-          } else {
-            return this.client.getSummaryForTopNHosts(N, start, end, includeOther, exporterNode, ifIndex, dscp, ecn).then(table => {
-              return {
-                data: FlowDatasource.toTable(target, table)
-              };
-            });
-          }
+          return this.client.getSummaryForDscps(start, end, exporterNode, ifIndex, dscp, ecn).then(table => {
+            return {
+              data: FlowDatasource.toTable(target, table, dscpLabel)
+            };
+          });
         }
       default:
         throw 'Unsupported target metric: ' + target.metric;
@@ -290,7 +274,11 @@ export class FlowDatasource {
     );
   }
 
-  static toTable(target, table) {
+  static toTable(
+      target,
+      table,
+      labelTransformer
+  ) {
     let toBits = FlowDatasource.isFunctionPresent(target, 'toBits');
 
     if (toBits) {
@@ -303,6 +291,10 @@ export class FlowDatasource {
       });
       table.headers[inIndex] = 'Bits In';
       table.headers[outIndex] = 'Bits Out';
+    }
+
+    if (labelTransformer) {
+      table.rows.forEach(r => r[0] = labelTransformer(r[0]));
     }
 
     let columns = table && table.headers ? _.map(table.headers, column => {
@@ -322,7 +314,12 @@ export class FlowDatasource {
     ];
   }
 
-  static toSeries(target, flowSeries) {
+  static toSeries(
+      target,
+      flowSeries,
+      labelTransformer,
+  ) {
+    labelTransformer = labelTransformer ? labelTransformer : function(any) { return any; };
     let toBits = FlowDatasource.isFunctionPresent(target, 'toBits');
     let perSecond = FlowDatasource.isFunctionPresent(target, 'perSecond');
     let negativeEgress = FlowDatasource.isFunctionPresent(target, 'negativeEgress');
@@ -387,7 +384,7 @@ export class FlowDatasource {
         }
 
         series.push({
-          target: columns[i].label + suffix,
+          target: labelTransformer(columns[i].label) + suffix,
           datapoints: datapoints
         });
       }

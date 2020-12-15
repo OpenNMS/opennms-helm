@@ -457,4 +457,18 @@ export class ClientDelegate {
             }).catch(this.decorateError);
     }
 
+  getSummaryForDscps(start, end, nodeCriteria, interfaceId, dscp, ecn) {
+    return this.getFlowDao()
+        .then(function(flowDao) {
+          return flowDao.getSummaryForDscps(start, end, nodeCriteria, interfaceId, dscp, ecn);
+        }).catch(this.decorateError);
+  }
+
+  getSeriesForDscps(start, end, step, nodeCriteria, interfaceId, dscp, ecn) {
+    return this.getFlowDao()
+        .then(function(flowDao) {
+          return flowDao.getSeriesForDscps(start, end, step, nodeCriteria, interfaceId, dscp, ecn);
+        }).catch(this.decorateError);
+  }
+
 }
