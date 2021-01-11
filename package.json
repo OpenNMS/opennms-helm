@@ -101,7 +101,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "install-deps": "npm --prefer-offline --no-progress install",
-    "dev": "tsc && webpack --mode=development",
+    "dev": "tsc && webpack --mode=development --progress",
     "docs": "antora generate local-site.yml",
     "build": "npm run clean && tsc && webpack --mode=production --optimize-minimize --optimize-dedupe",
     "eslint": "eslint 'src/**/*.js' 'src/**/*.ts'",

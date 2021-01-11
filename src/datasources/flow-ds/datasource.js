@@ -2,7 +2,7 @@ import _ from 'lodash';
 import {ClientDelegate} from 'src/lib/client_delegate';
 import kbn from 'app/core/utils/kbn';
 import {processMultiSelectionVariables} from "src/lib/utils2";
-import {dscpLabel, dscpSelectOptions} from "src/lib/tos_helper";
+import {dscpLabel, dscpSelectOptions, ecnLabel, ecnSelectOptions} from "src/lib/tos_helper";
 
 export class FlowDatasource {
   /** @ngInject */
@@ -39,7 +39,7 @@ export class FlowDatasource {
     let exporterNode = this.getFunctionParameterOrDefault(target, 'withExporterNode', 0);
     let ifIndex = this.getFunctionParameterOrDefault(target, 'withIfIndex', 0);
     let dscp = processMultiSelectionVariables(this.getFunctionParametersOrDefault(target, 'withDscp', 0, null));
-    let ecn = this.getFunctionParametersOrDefault(target, 'withEcn', 0, null);
+    let ecn = processMultiSelectionVariables(this.getFunctionParametersOrDefault(target, 'withEcn', 0, null));
     let applications = this.getFunctionParametersOrDefault(target, 'withApplication', 0, null);
     let conversations = this.getFunctionParametersOrDefault(target, 'withConversation', 0, null);
     let hosts = this.getFunctionParametersOrDefault(target, 'withHost', 0, null);
@@ -161,6 +161,20 @@ export class FlowDatasource {
             };
           });
         }
+      case 'ecns':
+        if (!asTableSummary) {
+          return this.client.getSeriesForEcns(start, end, step, exporterNode, ifIndex, dscp, ecn).then(series => {
+            return {
+              data: FlowDatasource.toSeries(target, series, ecnLabel)
+            };
+          });
+        } else {
+          return this.client.getSummaryForEcns(start, end, exporterNode, ifIndex, dscp, ecn).then(table => {
+            return {
+              data: FlowDatasource.toTable(target, table, ecnLabel)
+            };
+          });
+        }
       default:
         throw 'Unsupported target metric: ' + target.metric;
     }
@@ -207,18 +221,26 @@ export class FlowDatasource {
     }
     query = this.templateSrv.replace(query);
 
-    let exporterNodesRegex = /exporterNodesWithFlows\((.*)\)/;
-    let interfacesOnExporterNodeRegex = /interfacesOnExporterNodeWithFlows\((.*)\)/;
-    let dscpOnExporterNodeAndInterfaceRegex = /dscpOnExporterNodeAndInterface\(([^,]*),\s*([^,]*),\s*([^,]*),\s*([^,]*)\)/;
+    let exporterNodesRegex = /exporterNodesWithFlows\(\s*([^,]+),\s*([^\s]+\s*)\)/;
+    let interfacesOnExporterNodeRegex = /interfacesOnExporterNodeWithFlows\(\s*([^,]+),\s*([^,]+),\s*([^\s]+\s*)\)/;
+    let dscpOnExporterNodeAndInterfaceRegex = /dscpOnExporterNodeAndInterface\(\s*([^,]+),\s*([^,]+),\s*([^,]+),\s*([^\s]+\s*)\)/;
+    let ecnOnExporterNodeAndInterfaceRegex = /ecnOnExporterNodeAndInterface\(\s*([^,]+),\s*([^,]+),\s*([^,]+),\s*([^\s]+\s*)\)/;
 
     let exporterNodesQuery = query.match(exporterNodesRegex);
     if (exporterNodesQuery) {
-      return this.metricFindExporterNodes(exporterNodesQuery[1]);
+      return this.metricFindExporterNodes(
+          exporterNodesQuery[1], // start millis
+          exporterNodesQuery[2], // end millis
+      );
     }
 
     let interfacesOnExporterNodeQuery = query.match(interfacesOnExporterNodeRegex);
     if (interfacesOnExporterNodeQuery) {
-      return this.metricFindInterfacesOnExporterNode(interfacesOnExporterNodeQuery[1]);
+      return this.metricFindInterfacesOnExporterNode(
+          interfacesOnExporterNodeQuery[1], // node
+          interfacesOnExporterNodeQuery[2], // start millis
+          interfacesOnExporterNodeQuery[3], // end millis
+      );
     }
 
     let dscpOnExporterNodeAndInterfaceQuery = query.match(dscpOnExporterNodeAndInterfaceRegex);
@@ -231,11 +253,21 @@ export class FlowDatasource {
       );
     }
 
+    let ecnOnExporterNodeAndInterfaceQuery = query.match(ecnOnExporterNodeAndInterfaceRegex);
+    if (ecnOnExporterNodeAndInterfaceQuery) {
+      return this.metricFindEcnOnExporterNodeAndInterface(
+          ecnOnExporterNodeAndInterfaceQuery[1], // node
+          ecnOnExporterNodeAndInterfaceQuery[2], // interface
+          ecnOnExporterNodeAndInterfaceQuery[3], // start millis
+          ecnOnExporterNodeAndInterfaceQuery[4], // end millis
+      );
+    }
+
     return this.$q.resolve([]);
   }
 
-  metricFindExporterNodes(/* query */) {
-    return this.client.getExporters().then(exporters => {
+  metricFindExporterNodes(start, end) {
+    return this.client.getExporters(start, end).then(exporters => {
       let results = [];
       _.each(exporters, function (exporter) {
         results.push({text: exporter.label, value: exporter.id, expandable: true});
@@ -244,8 +276,8 @@ export class FlowDatasource {
     });
   }
 
-  metricFindInterfacesOnExporterNode(query) {
-    return this.client.getExporter(query).then(exporter => {
+  metricFindInterfacesOnExporterNode(query, start, end) {
+    return this.client.getExporter(query, start, end).then(exporter => {
       let results = [];
       _.each(exporter.interfaces, function (iff) {
         results.push({text: iff.name + "(" + iff.index + ")", value: iff.index, expandable: true});
@@ -254,23 +286,15 @@ export class FlowDatasource {
     });
   }
 
-  metricFindTosOnExporterNodeAndInterface(node, iface) {
-    return this.client.getTosBytes(node,  iface).then(values => {
-      values = _.sortBy(values);
-
-      let results = [];
-      results.push({text: "(All)", value: "",});
-
-      _.each(values, function (tos) {
-        results.push({text: tos + "(" + tos + ")", value: tos, expandable: true});
-      });
-      return results;
-    });
-  }
-
   metricFindDscpOnExporterNodeAndInterface(node, iface, start, end) {
     return this.client.getDscpValues(node,  iface, start, end).then(
         values => dscpSelectOptions(values)
+    );
+  }
+
+  metricFindEcnOnExporterNodeAndInterface(node, iface, start, end) {
+    return this.client.getEcnValues(node,  iface, start, end).then(
+        values => ecnSelectOptions(values)
     );
   }
 

@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import $ from 'angular';
 import {dscpTypeAheadOptions} from "../../lib/tos_helper";
+import {ecnTypeAheadOptions} from "src/lib/tos_helper";
 
 let index = [];
 let categories = {
@@ -71,6 +72,21 @@ addFuncDef({
       return ctx.client
           .getDscpValues(ctx.getNodeCriteria(), ctx.getInterfaceId(), ctx.getStartTime(), ctx.getEndTime())
           .then(codes => dscpTypeAheadOptions(codes).filter(str => str.toUpperCase().startsWith(input.toUpperCase())));
+    }
+  }]
+});
+
+addFuncDef({
+  name: 'withEcn',
+  category: categories.Filter,
+  cardinality: Cardinality.MULTIPLE,
+  params: [{
+    name: "ecn",
+    type: "string",
+    options: (input, ctx) => {
+      return ctx.client
+          .getEcnValues(ctx.getNodeCriteria(), ctx.getInterfaceId(), ctx.getStartTime(), ctx.getEndTime())
+          .then(codes => ecnTypeAheadOptions(codes).filter(str => str.toUpperCase().startsWith(input.toUpperCase())));
     }
   }]
 });

@@ -104,6 +104,12 @@
               ]
             },
             {
+              "name": "withEcn",
+              "parameters": [
+                "$ecn"
+              ]
+            },
+            {
               "name": "perSecond",
               "parameters": []
             }
@@ -311,6 +317,12 @@
               "name": "withDscp",
               "parameters": [
                 "$dscp"
+              ]
+            },
+            {
+              "name": "withEcn",
+              "parameters": [
+                "$ecn"
               ]
             },
             {
@@ -622,6 +634,12 @@
                   ]
                 },
                 {
+                  "name": "withEcn",
+                  "parameters": [
+                    "$ecn"
+                  ]
+                },
+                {
                   "name": "withIfIndex",
                   "parameters": [
                     "$interface"
@@ -831,6 +849,12 @@
                   ]
                 },
                 {
+                  "name": "withEcn",
+                  "parameters": [
+                    "$ecn"
+                  ]
+                },
+                {
                   "name": "asTableSummary",
                   "parameters": []
                 }
@@ -928,6 +952,12 @@
                   "name": "withDscp",
                   "parameters": [
                     "$dscp"
+                  ]
+                },
+                {
+                  "name": "withEcn",
+                  "parameters": [
+                    "$ecn"
                   ]
                 },
                 {
@@ -1159,6 +1189,12 @@
                   ]
                 },
                 {
+                  "name": "withEcn",
+                  "parameters": [
+                    "$ecn"
+                  ]
+                },
+                {
                   "name": "asTableSummary",
                   "parameters": []
                 }
@@ -1249,6 +1285,12 @@
                   "name": "withDscp",
                   "parameters": [
                     "$dscp"
+                  ]
+                },
+                {
+                  "name": "withEcn",
+                  "parameters": [
+                    "$ecn"
                   ]
                 },
                 {
@@ -1474,6 +1516,12 @@
                   ]
                 },
                 {
+                  "name": "withEcn",
+                  "parameters": [
+                    "$ecn"
+                  ]
+                },
+                {
                   "name": "asTableSummary",
                   "parameters": []
                 }
@@ -1529,7 +1577,7 @@
         "multi": false,
         "name": "node",
         "options": [],
-        "query": "exporterNodesWithFlows()",
+        "query": "exporterNodesWithFlows($__from, $__to)",
         "refresh": 1,
         "regex": "",
         "sort": 0,
@@ -1549,7 +1597,7 @@
         "multi": false,
         "name": "interface",
         "options": [],
-        "query": "interfacesOnExporterNodeWithFlows($node)",
+        "query": "interfacesOnExporterNodeWithFlows($node, $__from, $__to)",
         "refresh": 1,
         "regex": "",
         "sort": 0,
@@ -1566,11 +1614,33 @@
         "definition": "dscpOnExporterNodeAndInterface($node, $interface, $__from, $__to)",
         "hide": 0,
         "includeAll": true,
-        "label": null,
+        "label": "DSCP",
         "multi": true,
         "name": "dscp",
         "options": [],
         "query": "dscpOnExporterNodeAndInterface($node, $interface, $__from, $__to)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "all",
+        "current": {},
+        "datasource": "$flowds",
+        "definition": "ecnOnExporterNodeAndInterface($node, $interface, $__from, $__to)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "ECN",
+        "multi": true,
+        "name": "ecn",
+        "options": [],
+        "query": "ecnOnExporterNodeAndInterface($node, $interface, $__from, $__to)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,

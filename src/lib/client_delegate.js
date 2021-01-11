@@ -434,19 +434,19 @@ export class ClientDelegate {
             }).catch(this.decorateError);
     }
 
-    getExporters() {
+    getExporters(start, end) {
         let searchLimit = this.searchLimit;
         return this.getFlowDao()
             .then(function(flowDao) {
-                return flowDao.getExporters(searchLimit);
+                return flowDao.getExporters(searchLimit, start, end);
             }).catch(this.decorateError);
     }
 
-    getExporter(nodeCriteria) {
+    getExporter(nodeCriteria, start, end) {
         let searchLimit = this.searchLimit;
         return this.getFlowDao()
             .then(function(flowDao) {
-                return flowDao.getExporter(nodeCriteria, searchLimit);
+                return flowDao.getExporter(nodeCriteria, searchLimit, start, end);
             }).catch(this.decorateError);
     }
 
@@ -457,18 +457,39 @@ export class ClientDelegate {
             }).catch(this.decorateError);
     }
 
-  getSummaryForDscps(start, end, nodeCriteria, interfaceId, dscp, ecn) {
-    return this.getFlowDao()
-        .then(function(flowDao) {
-          return flowDao.getSummaryForDscps(start, end, nodeCriteria, interfaceId, dscp, ecn);
-        }).catch(this.decorateError);
-  }
+    getSummaryForDscps(start, end, nodeCriteria, interfaceId, dscp, ecn) {
+      return this.getFlowDao()
+          .then(function(flowDao) {
+            return flowDao.getSummaryForDscps(start, end, nodeCriteria, interfaceId, dscp, ecn);
+          }).catch(this.decorateError);
+    }
 
-  getSeriesForDscps(start, end, step, nodeCriteria, interfaceId, dscp, ecn) {
-    return this.getFlowDao()
-        .then(function(flowDao) {
-          return flowDao.getSeriesForDscps(start, end, step, nodeCriteria, interfaceId, dscp, ecn);
-        }).catch(this.decorateError);
-  }
+    getSeriesForDscps(start, end, step, nodeCriteria, interfaceId, dscp, ecn) {
+      return this.getFlowDao()
+          .then(function(flowDao) {
+            return flowDao.getSeriesForDscps(start, end, step, nodeCriteria, interfaceId, dscp, ecn);
+          }).catch(this.decorateError);
+    }
+
+    getEcnValues(nodeCriteria, interfaceId, start, end) {
+      return this.getFlowDao()
+          .then(function(flowDao) {
+            return flowDao.getEcnValues(nodeCriteria, interfaceId, start, end);
+          }).catch(this.decorateError);
+    }
+
+    getSummaryForEcns(start, end, nodeCriteria, interfaceId, dscp, ecn) {
+      return this.getFlowDao()
+          .then(function(flowDao) {
+            return flowDao.getSummaryForEcns(start, end, nodeCriteria, interfaceId, dscp, ecn);
+          }).catch(this.decorateError);
+    }
+
+    getSeriesForEcns(start, end, step, nodeCriteria, interfaceId, dscp, ecn) {
+      return this.getFlowDao()
+          .then(function(flowDao) {
+            return flowDao.getSeriesForEcns(start, end, step, nodeCriteria, interfaceId, dscp, ecn);
+          }).catch(this.decorateError);
+    }
 
 }
