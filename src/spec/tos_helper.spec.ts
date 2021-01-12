@@ -1,14 +1,18 @@
-import {dscpTypeAheadOptions} from '../lib/tos_helper'
+import {dscpTypeAheadOptions, ecnTypeAheadOptions} from '../lib/tos_helper'
 import {expect} from 'chai'
 
 describe('TosHelper', () => {
     function checkSingleCodes(cases: [number, string[]][], codesToOption: (codes: number[]) => string[]) {
+        // check that for each given case the calculate options are an array consisting of
+        // - the code itself
+        // - and zero or more expected symbolic names
         for (const c of cases) {
             expect(codesToOption([c[0]])).to.deep.equal([c[0].toString(), ...c[1]])
         }
     }
 
     function checkSingleTwoCodes(cases: [number, string[]][], codesToOption: (codes: number[]) => string[]) {
+        // check the calculated options when calculating for two codes/cases at once
         for (let i = 0; i < cases.length - 1; i++) {
             const c1 = cases[i]
             const c2 = cases[i + 1]
@@ -50,4 +54,20 @@ describe('TosHelper', () => {
             checkSingleTwoCodes(cases, dscpTypeAheadOptions)
         })
     })
+
+    describe('ecn options', () => {
+        const cases: [number, string[]][] = [
+            [0, ['Non-ECT']],
+            [1, ['ECT']],
+            [2, ['ECT']],
+            [3, ['CE']],
+        ]
+        it('for single code', () => {
+            checkSingleCodes(cases, ecnTypeAheadOptions)
+        })
+        it('for two codes', () => {
+            checkSingleTwoCodes(cases, ecnTypeAheadOptions)
+        })
+    })
+
 })
