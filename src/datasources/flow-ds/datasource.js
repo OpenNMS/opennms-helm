@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import {ClientDelegate} from 'src/lib/client_delegate';
 import kbn from 'app/core/utils/kbn';
-import {processMultiSelectionVariables} from "src/lib/utils2";
+import {processSelectionVariables} from "src/lib/utils2";
 import {dscpLabel, dscpSelectOptions, ecnLabel, ecnSelectOptions} from "src/lib/tos_helper";
 
 export class FlowDatasource {
@@ -38,8 +38,8 @@ export class FlowDatasource {
     // Filter
     let exporterNode = this.getFunctionParameterOrDefault(target, 'withExporterNode', 0);
     let ifIndex = this.getFunctionParameterOrDefault(target, 'withIfIndex', 0);
-    let dscp = processMultiSelectionVariables(this.getFunctionParametersOrDefault(target, 'withDscp', 0, null));
-    let ecn = processMultiSelectionVariables(this.getFunctionParametersOrDefault(target, 'withEcn', 0, null));
+    let dscp = processSelectionVariables(this.getFunctionParametersOrDefault(target, 'withDscp', 0, null));
+    let ecn = processSelectionVariables(this.getFunctionParametersOrDefault(target, 'withEcn', 0, null));
     let applications = this.getFunctionParametersOrDefault(target, 'withApplication', 0, null);
     let conversations = this.getFunctionParametersOrDefault(target, 'withConversation', 0, null);
     let hosts = this.getFunctionParametersOrDefault(target, 'withHost', 0, null);

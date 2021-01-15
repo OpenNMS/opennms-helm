@@ -1,12 +1,13 @@
 /**
- * Converts a template variable value into a string array of selected values.
+ * Converts an input string into a string array of selected values.
  *
- * Multi-selection variables are supported. A multi-selection value is a string that encloses by curly braces a
- * comma separated list of values.
+ * The input string may be the value of a multi-selection template variable. In this case the input string is
+ * delimited by curly braces that enclose a comma separated list of values.
  *
- * The dropAll parameter determines if an empty array is returned if "all" is contained in the selected values.
+ * The dropUnresolved parameter determines if an empty array is returned if the input starts with '$'.
+ * The dropAll parameter determines if an empty array is returned if the input is "all".
  */
-export function processSelectionVariable(input: string, dropAll: boolean): string[] {
+export function processSelectionVariable(input: string, dropUnresolved: boolean, dropAll: boolean): string[] {
     if (input) {
         if (input.startsWith('{') && input.endsWith('}')) {
             const args = input.substring(1, input.length - 1).split(',').map(s => s.trim())
@@ -15,12 +16,12 @@ export function processSelectionVariable(input: string, dropAll: boolean): strin
             } else {
                 return args
             }
+        } else if (dropUnresolved && input.startsWith('$')) {
+            return [];
+        } else if (dropAll && input === 'all') {
+            return []
         } else {
-            if (dropAll && input === 'all') {
-                return []
-            } else {
-                return [input]
-            }
+            return [input]
         }
     } else {
         return []
@@ -33,14 +34,16 @@ export function isFirst<T>(t: T, index: number, array: T[]) {
 }
 
 /**
- * Converts multiple (possibly multi-selection) variables into a string array of all contained selection.
+ * Converts multiple (possibly multi-selection) inputs into a string array of all contained selections.
  *
- * An empty array is returned if "all" is included in any of the variables.
- * Duplicates are removed.
+ * Unresolved template variables (detected by a leading '$' sign) are ignored. This allows to remove template variables
+ * from a dashboard without having to adjust queries that use them.
+ *
+ * An empty array is returned if "all" would be included in the selections. Duplicates are removed.
  */
-export function processMultiSelectionVariables(input?: string[]): string[] {
+export function processSelectionVariables(input?: string[]): string[] {
     if (input) {
-        const mapped = input.map(i => processSelectionVariable(i, false))
+        const mapped = input.map(i => processSelectionVariable(i, true, false))
         if (mapped.some(m => m.some(s => s === 'all'))) {
             return []
         } else {
