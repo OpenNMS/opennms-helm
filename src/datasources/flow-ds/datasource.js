@@ -321,6 +321,27 @@ export class FlowDatasource {
       table.rows.forEach(r => r[0] = labelTransformer(r[0]));
     }
 
+    let ecnIndex = table.headers.lastIndexOf('ECN');
+    if (ecnIndex > 0) {
+      table.rows = _.map(table.rows, (row) => {
+        let label;
+        switch(row[ecnIndex]) {
+          // all flows used enc capable transports / no congestions were reported
+          case 0: label = 'ect / no ce'; break;
+          // at least some flows used non-enc-capable-transports / no congestions were reported
+          case 1: label = 'non-ect / no ce'; break;
+          // all flows used enc capable transports / congestions were reported
+          case 2: label = 'ect / ce'; break;
+          // at least some flows used non-enc-capable-transports / congestions were reported
+          case 3: label = 'non-ect / ce'; break;
+        }
+        if (label) {
+          row[ecnIndex] = label;
+        }
+        return row;
+      });
+    }
+
     let columns = table && table.headers ? _.map(table.headers, column => {
       return {"text": column}
     }) : [];
